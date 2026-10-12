@@ -26,8 +26,9 @@ async def metrics_middleware(request: Request, call_next):
             REQUESTS.labels(request.method, path, status).inc()
 
 @app.get("/")
-def root():
+def root(response: Response):
     n = r.incr("visites")
+    response.headers["X-Visites-Version"] = "0.1.0"
     return {"visites": n}
 
 @app.get("/health")
